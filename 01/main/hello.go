@@ -6,6 +6,9 @@ import (
 )
 
 func main() {
+	// You can get command line options by flag package.
+	// 'flag.StringVar' returns a string option as a pointer.
+	// If you want to know other flag package's functions, go to https://golang.org/pkg/flag
 	var name string
 	flag.StringVar(&name, "name", "", "Write your name.")
 
