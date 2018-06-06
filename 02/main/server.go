@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -29,7 +30,14 @@ func main() {
 			return
 		}
 
+		w.Header().Set("Last-Modified", time.Now().Format(http.TimeFormat))
+
 		w.Write(b)
+	})
+
+	http.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "Not Found, %s", r.URL)
 	})
 
 	fmt.Println("http://localhost:8080")
