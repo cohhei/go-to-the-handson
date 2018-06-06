@@ -50,7 +50,7 @@ func main() {
 		return
 	}
 
-	if _, err = db.Exec(insertAccount); err != nil {
+	if err := insertAccounts(db); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -67,6 +67,23 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+}
+
+func insertAccounts(db *sql.DB) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+
+	if _, err = tx.Exec(insertAccount); err != nil {
+		return err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func getAccounts(db *sql.DB) ([]Account, error) {
