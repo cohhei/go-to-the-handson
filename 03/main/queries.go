@@ -33,7 +33,7 @@ ORDER BY ID
 type Account struct {
 	ID          int
 	Name        string
-	MailAddress string `db:"mail_address"`
+	MailAddress string
 	Lang        string
 }
 
