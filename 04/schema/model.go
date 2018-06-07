@@ -3,8 +3,8 @@ package schema
 import "time"
 
 type Todo struct {
-	ID      int
-	Title   string
-	Note    string
-	DueDate time.Time
+	ID      int       `json:"id"`
+	Title   string    `json:"title"`
+	Note    string    `json:"note"`
+	DueDate time.Time `json:"due_date"`
 }
