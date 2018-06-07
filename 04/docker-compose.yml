@@ -1,0 +1,10 @@
+version: "3.6"
+
+services:
+  postgres:
+    build: "./postgres"
+    restart: "always"
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"

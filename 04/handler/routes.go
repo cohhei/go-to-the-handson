@@ -6,9 +6,10 @@ import (
 	"github.com/corhhey/go-to-the-handson/04/db"
 )
 
-func SetUpRouting() {
+func SetUpRouting(postgres *db.Postgres) {
 	todoHandler := &todoHandler{
-		samples: &db.Sample{},
+		postgres: postgres,
+		samples:  &db.Sample{},
 	}
 
 	http.HandleFunc("/samples", todoHandler.GetSamples)

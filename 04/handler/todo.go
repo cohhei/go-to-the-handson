@@ -9,7 +9,8 @@ import (
 )
 
 type todoHandler struct {
-	samples *db.Sample
+	postgres *db.Postgres
+	samples  *db.Sample
 }
 
 func (handler *todoHandler) GetSamples(w http.ResponseWriter, r *http.Request) {
