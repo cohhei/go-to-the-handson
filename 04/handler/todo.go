@@ -17,17 +17,26 @@ func (handler *todoHandler) GetSamples(w http.ResponseWriter, r *http.Request) {
 
 	todoList, err := service.GetAll(ctx)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		responseError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	b, err := json.Marshal(todoList)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-		return
-	}
+	responseOk(w, todoList)
+}
 
-	w.Write(b)
+func responseOk(w http.ResponseWriter, body interface{}) {
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(body)
+}
+
+func responseError(w http.ResponseWriter, code int, message string) {
+	w.WriteHeader(code)
+	w.Header().Set("Content-Type", "application/json")
+
+	body := map[string]string{
+		"error": message,
+	}
+	json.NewEncoder(w).Encode(body)
 }
