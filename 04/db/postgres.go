@@ -8,7 +8,7 @@ import (
 )
 
 type Postgres struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 func ConnectPostgres() (*Postgres, error) {
@@ -27,7 +27,7 @@ func ConnectPostgres() (*Postgres, error) {
 }
 
 func (p *Postgres) Close() {
-	p.db.Close()
+	p.DB.Close()
 }
 
 func (p *Postgres) Insert(todo *schema.Todo) (int, error) {
@@ -37,7 +37,7 @@ func (p *Postgres) Insert(todo *schema.Todo) (int, error) {
 		RETURNING id;
 	`
 
-	rows, err := p.db.Query(query, todo.Title, todo.Note, todo.DueDate)
+	rows, err := p.DB.Query(query, todo.Title, todo.Note, todo.DueDate)
 	if err != nil {
 		return -1, err
 	}
@@ -58,7 +58,7 @@ func (p *Postgres) Delete(id int) error {
 		WHERE id = $1;
 	`
 
-	if _, err := p.db.Exec(query, id); err != nil {
+	if _, err := p.DB.Exec(query, id); err != nil {
 		return err
 	}
 
@@ -72,7 +72,7 @@ func (p *Postgres) GetAll() ([]schema.Todo, error) {
 		ORDER BY id;
 	`
 
-	rows, err := p.db.Query(query)
+	rows, err := p.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}

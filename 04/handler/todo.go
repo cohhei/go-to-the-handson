@@ -73,7 +73,7 @@ func (handler *todoHandler) deleteTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseOk(w, nil)
+	w.WriteHeader(http.StatusOK)
 }
 
 func (handler *todoHandler) getAllTodo(w http.ResponseWriter, r *http.Request) {
