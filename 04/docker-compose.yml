@@ -8,3 +8,9 @@ services:
       POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+  todo-api:
+    build: "."
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
