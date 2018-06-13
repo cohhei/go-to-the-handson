@@ -2,7 +2,10 @@
 
 ## `nat/http` package
 
+### Create a request
+
 ```go
+// request.go
 package main
 
 import (
@@ -20,11 +23,51 @@ func main() {
 
 	body, err := ioutil.ReadAll(res.Body)
 
-	fmt.Println(body)
+	fmt.Println(string(body))
 }
 ```
 
+```json
+$ go run request.go | jq
+{
+  "login": "defunkt",
+  "id": 2,
+  "node_id": "MDQ6VXNlcjI=",
+  "avatar_url": "https://avatars0.githubusercontent.com/u/2?v=4",
+  "gravatar_id": "",
+  "url": "https://api.github.com/users/defunkt",
+  "html_url": "https://github.com/defunkt",
+  "followers_url": "https://api.github.com/users/defunkt/followers",
+  "following_url": "https://api.github.com/users/defunkt/following{/other_user}",
+  "gists_url": "https://api.github.com/users/defunkt/gists{/gist_id}",
+  "starred_url": "https://api.github.com/users/defunkt/starred{/owner}{/repo}",
+  "subscriptions_url": "https://api.github.com/users/defunkt/subscriptions",
+  "organizations_url": "https://api.github.com/users/defunkt/orgs",
+  "repos_url": "https://api.github.com/users/defunkt/repos",
+  "events_url": "https://api.github.com/users/defunkt/events{/privacy}",
+  "received_events_url": "https://api.github.com/users/defunkt/received_events",
+  "type": "User",
+  "site_admin": true,
+  "name": "Chris Wanstrath",
+  "company": "@github ",
+  "blog": "http://chriswanstrath.com/",
+  "location": "San Francisco",
+  "email": null,
+  "hireable": true,
+  "bio": "🍔 ",
+  "public_repos": 107,
+  "public_gists": 273,
+  "followers": 20213,
+  "following": 210,
+  "created_at": "2007-10-20T05:24:19Z",
+  "updated_at": "2018-06-05T19:29:51Z"
+}
+```
+
+### Setup a server
+
 ```go
+// server.go
 package main
 
 import (
@@ -43,9 +86,19 @@ func main() {
 }
 ```
 
+```sh
+$ go run server.go
+http://localhost:8080
+...
+
+$ curl http://localhost:8080
+Hello, "/"
+```
+
 ## `json` package
 
 ```go
+// json.go
 package main
 
 import (
@@ -65,6 +118,11 @@ func main() {
 	}
 	fmt.Println("ID: ", data.ID, "Name: ", data.Name)
 }
+```
+
+```sh
+$ go run json.go
+ID:  1 Name:  Gopher
 ```
 
 ## Exercise 2-1

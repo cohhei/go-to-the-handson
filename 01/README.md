@@ -4,6 +4,7 @@
 
 ```sh
 $ go get -u github.com/corhhey/go-to-the-handson
+$ go get golang.org/x/tools/cmd/goimports
 ...
 $ mkdir go-handson
 $ cd go-handson
@@ -12,6 +13,7 @@ $ cd go-handson
 ## Hello World
 
 ```go
+// hello.go
 package main
 
 import (
@@ -24,6 +26,9 @@ func main() {
 ```
 
 ```sh
+$ goimports -w .
+# Format and add packages that should be imported
+
 $ go run hello.go
 Hello World!
 
@@ -38,6 +43,7 @@ Hello World!
 ### Usage of `flag.StringVar`
 
 ```go
+// hello.go
 package main
 
 import (
@@ -77,6 +83,7 @@ Hello Gopher!
 The answer is [hello.go](main/hello.go)
 
 ## `os` package
+
 ### Usage of `os.Args`
 
 ```go
@@ -126,6 +133,7 @@ for {
 ```
 
 #### Writing files
+
 ```go
 f, err := os.Create("/path/to/file")
 if err != nil {
