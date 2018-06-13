@@ -54,7 +54,7 @@ import (
 )
 
 func main() {
-	str := `{"id":1,"name":"Gopher"}`
+	str := []byte(`{"id":1,"name":"Gopher"}`)
 	data := struct {
 		ID   int    `json:"id"`
 		Name string `json:"name"`
@@ -62,13 +62,14 @@ func main() {
 
 	if err := json.Unmarshal(str, &data); err != nil {
 		panic(data)
-  }
-	fmt.Println("ID: ", data.ID, "Name: ", data.name)
+	}
+	fmt.Println("ID: ", data.ID, "Name: ", data.Name)
+}
 ```
 
 ## Exercise 2-1
 
-Create an application `request.go` which creates a `GET` request to https://api.github.com/users/defunkt and parses the response body with `json.Unmarshal` only `login`, `id`, `site_admin`, and `bio`.
+Create an application `request.go` which creates a `GET` request to https://api.github.com/users/defunkt and parses the response body with `json.Unmarshal` only `login`, `id`, `site_admin`, and `bio`.
 
 ```sh
 $ go run request.go

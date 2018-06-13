@@ -64,7 +64,7 @@ If you want to know more about the `flag` package, please go to the https://gola
 
 ### Exercise 1-1
 
-Create a CLI application which outputs `Hello World!` if no options are specified. And if a string option is specified as `-name`, it has to output `Hello [YOUR_NAME]!`
+Create a CLI application which outputs `Hello World!` if no options are specified. And if a string option is specified as `-name`, it has to output `Hello [YOUR_NAME]!`
 
 ```sh
 $ ./hello
@@ -107,7 +107,7 @@ Gopher
 ```go
 file, err := os.Open(`/path/to/file`)
 if err != nil {
-		panic(err)
+	panic(err)
 }
 defer file.Close()
 

@@ -25,6 +25,10 @@ import (
 )
 
 func main() {
+	// connStr := "user=postgres dbname=postgres sslmode=disable"
+	// db, err := sql.Open("postgres", connStr)
+	
+	// [user]:[password]@[address]/[DB name]
 	connStr := "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -83,7 +87,7 @@ func main() {
 	if _, err = db.Exec(createTable); err != nil {
 		fmt.Println(err)
 		return
-  }
+	}
 
 	if _, err = db.Exec("DROP TABLE ACCOUNT"); err != nil {
 		fmt.Println(err)
@@ -141,8 +145,7 @@ func main() {
 }
 
 // You should implement the function
-func insertAccounts(db *sql.DB) error {
-}
+func insertAccounts(db *sql.DB) error {}
 ```
 
 HINTS: You can create a transaction with [`DB.begin`](https://golang.org/pkg/database/sql/#DB.Begin) and commit it with [`Tx.Commit`](https://golang.org/pkg/database/sql/#Tx.Commit).
