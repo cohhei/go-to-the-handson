@@ -3,11 +3,11 @@
 ## Setup
 
 ```sh
-$ go get -u github.com/corhhey/go-to-the-handson
 $ go get golang.org/x/tools/cmd/goimports
 ...
 $ mkdir go-handson
 $ cd go-handson
+
 ```
 
 ## Hello World
@@ -26,7 +26,7 @@ func main() {
 ```
 
 ```sh
-$ goimports -w .
+$ goimports -w . # You should add the `$GOPATH/bin` to the `$PATH`
 # Format and add packages that should be imported
 
 $ go run hello.go
@@ -62,7 +62,7 @@ func main() {
 ```
 
 ```sh
-$ go run -opt option hello.go
+$ go run hello.go -opt option
 option
 ```
 
