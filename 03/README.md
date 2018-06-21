@@ -13,6 +13,10 @@ d9065d8c1f30        postgres:alpine     "docker-entrypoint.s…"   3 seconds ago
 
 ## Connect PostgreSQL
 
+```sh
+$ touch connect.go
+```
+
 ```go
 // connect.go
 package main
@@ -53,6 +57,10 @@ Ping OK
 ```
 
 ## Create Tables
+
+```sh
+$ touch queries.go
+```
 
 ```go
 // queries.go
