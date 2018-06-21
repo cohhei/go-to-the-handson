@@ -122,6 +122,11 @@ func connectPostgres() (*sql.DB, error) {
 }
 ```
 
+```sh
+$ go run queries.go
+Ping OK
+```
+
 ## Exercise 3-1
 
 Add a function `insertAccount()` into `queries.go`. It inserts records which contain data of any static accounts to the `account` table by inside a transaction.
