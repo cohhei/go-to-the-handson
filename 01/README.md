@@ -12,6 +12,10 @@ $ cd go-handson
 
 ## Hello World
 
+```sh
+$ touch hello.go
+```
+
 ```go
 // hello.go
 package main
@@ -26,7 +30,7 @@ func main() {
 ```
 
 ```sh
-$ goimports -w . # You should add the `$GOPATH/bin` to the `$PATH`
+$ $GOPATH/bin/goimports -w .
 # Format and add packages that should be imported
 
 $ go run hello.go
@@ -42,8 +46,12 @@ Hello World!
 
 ### Usage of `flag.StringVar`
 
+```sh
+$ touch flag.go
+```
+
 ```go
-// hello.go
+// flag.go
 package main
 
 import (
@@ -73,10 +81,10 @@ If you want to know more about the `flag` package, please go to the https://gola
 Create a CLI application which outputs `Hello World!` if no options are specified. And if a string option is specified as `-name`, it has to output `Hello [YOUR_NAME]!`
 
 ```sh
-$ ./hello
+$ go run hello.go
 Hello World!
 
-$ ./hello -name Gopher
+$ go run hello.go -name Gopher
 Hello Gopher!
 ```
 
@@ -85,6 +93,10 @@ The answer is [hello.go](main/hello.go)
 ## `os` package
 
 ### Usage of `os.Args`
+
+```sh
+$ touch args.go
+```
 
 ```go
 // args.go
