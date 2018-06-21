@@ -4,6 +4,10 @@
 
 ### Create a request
 
+```sh
+$ touch request.go
+```
+
 ```go
 // request.go
 package main
@@ -66,6 +70,10 @@ $ go run request.go | jq
 
 ### Setup a server
 
+```sh
+$ touch server.go
+```
+
 ```go
 // server.go
 package main
@@ -96,6 +104,10 @@ Hello, "/"
 ```
 
 ## `json` package
+
+```sh
+$ touch json.go
+```
 
 ```go
 // json.go
