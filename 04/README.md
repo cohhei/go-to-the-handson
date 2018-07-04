@@ -79,7 +79,7 @@ type Todo struct {
 }
 ```
 
-It's a really common pattern to define schemas as a structure. The `Todo` structure has four fields, `ID`, `Title`, `Note`, and `DueDate`. They respectively have their types and [json tags](https://golang.org/pkg/encoding/json/). The tags will be the field names when the `Todo` structure is encoded.
+It's a really common pattern to define schemas as a structure. The `Todo` structure has four fields, `ID`, `Title`, `Note`, and `DueDate`. They respectively have their types and [json tags](https://golang.org/pkg/encoding/json/). The tags will be the field names when the `Todo` structure is encoded.
 
 ## Repositories
 
