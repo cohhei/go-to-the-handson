@@ -180,7 +180,7 @@ Add a function `getAccounts()` into `queries.go`. It returns all records in the 
 		return
 	}
 
-	fmt.Println(accounts)
+	fmt.Printf("%+v\n", accounts)
 ...
 
 // You should implement the function and define the Account struct
@@ -190,7 +190,7 @@ func getAccounts(db *sql.DB) ([]Account, error) {}
 ```sh
 $ go run queries.go
 Ping OK
-[{1 My Name my_name@example.com ja} {2 Your Name your_name@example.com en}]
+[{ID:1 Name:My Name MailAddress:my_name@example.com Lang:ja} {ID:2 Name:Your Name MailAddress:your_name@example.com Lang:en}]
 ```
 
 HINTS: You can execute `SELECT` queries with `DB.Query` and get the results with [`Rows.Scan`](https://golang.org/pkg/database/sql/#Row.Scan).

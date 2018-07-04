@@ -61,7 +61,7 @@ func main() {
 		return
 	}
 
-	fmt.Println(accounts)
+	fmt.Printf("%+v\n", accounts)
 
 	if _, err = db.Exec("DROP TABLE ACCOUNT"); err != nil {
 		fmt.Println(err)
