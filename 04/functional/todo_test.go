@@ -3,32 +3,31 @@ package functional
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/corhhey/go-to-the-handson/04/db"
 	"github.com/corhhey/go-to-the-handson/04/handler"
 	"github.com/corhhey/go-to-the-handson/04/schema"
 	"github.com/corhhey/go-to-the-handson/04/testdb"
 )
 
 func TestGetSamples(t *testing.T) {
-	testdb.Setup()
+	testServer := setupServer(nil)
 
-	res, err := http.Get("http://localhost:8080/samples")
+	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/samples", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer res.Body.Close()
 
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := strings.TrimSpace(string(b))
+	rec := httptest.NewRecorder()
+	testServer.ServeHTTP(rec, req)
+
+	got := strings.TrimSpace(rec.Body.String())
 
 	want := `[{"id":1,"title":"Do dishes","note":"","due_date":"2000-01-01T00:00:00Z"},{"id":2,"title":"Do homework","note":"","due_date":"2000-01-01T00:00:00Z"},{"id":2,"title":"Twitter","note":"","due_date":"2000-01-01T00:00:00Z"}]`
 
@@ -38,7 +37,8 @@ func TestGetSamples(t *testing.T) {
 }
 
 func TestGetAllTodo(t *testing.T) {
-	testdb.Setup()
+	postgres := &db.Postgres{testdb.Setup()}
+	testServer := setupServer(postgres)
 
 	todo := &schema.Todo{
 		Title:   "My Task1",
@@ -50,17 +50,15 @@ func TestGetAllTodo(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	res, err := http.Get("http://localhost:8080/todo")
+	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/todo", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer res.Body.Close()
 
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := strings.TrimSpace(string(b))
+	rec := httptest.NewRecorder()
+	testServer.ServeHTTP(rec, req)
+
+	got := strings.TrimSpace(rec.Body.String())
 
 	want := `[{"id":1,"title":"My Task1","note":"","due_date":"2000-01-01T00:00:00+09:00"}]`
 
@@ -70,23 +68,21 @@ func TestGetAllTodo(t *testing.T) {
 }
 
 func TestSaveTodo(t *testing.T) {
-	testdb.Setup()
+	postgres := &db.Postgres{testdb.Setup()}
+	testServer := setupServer(postgres)
 
 	body := []byte(`{"id":1,"title":"My Task1","note":"","due_date":"2000-01-01T00:00:00+09:00"}`)
 
-	res, err := http.Post("http://localhost:8080/todo", "application/json", bytes.NewReader(body))
+	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/todo", bytes.NewReader(body))
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer res.Body.Close()
 
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := strings.TrimSpace(string(b))
+	rec := httptest.NewRecorder()
+	testServer.ServeHTTP(rec, req)
 
-	want := `1`
+	got := strings.TrimSpace(rec.Body.String())
+	want := "1"
 
 	if got != want {
 		t.Fatalf("Want: %v, Got: %v", want, got)
@@ -110,7 +106,8 @@ func TestSaveTodo(t *testing.T) {
 }
 
 func TestDeleteTodo(t *testing.T) {
-	testdb.Setup()
+	postgres := &db.Postgres{testdb.Setup()}
+	testServer := setupServer(postgres)
 
 	todo := &schema.Todo{
 		Title:   "My Task1",
@@ -124,24 +121,15 @@ func TestDeleteTodo(t *testing.T) {
 
 	body := []byte(fmt.Sprintf(`{"id":%d}`, id))
 
-	req, err := http.NewRequest(http.MethodDelete, "http://localhost:8080/todo", bytes.NewReader(body))
+	req, err := http.NewRequest(http.MethodDelete, "http://localhost:9999/todo", bytes.NewReader(body))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer res.Body.Close()
+	rec := httptest.NewRecorder()
+	testServer.ServeHTTP(rec, req)
 
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-	got := strings.TrimSpace(string(b))
+	got := rec.Body.String()
 
 	want := ""
 
@@ -159,14 +147,6 @@ func TestDeleteTodo(t *testing.T) {
 	}
 }
 
-var postgres = testdb.Setup()
-
-var _ = setupServer()
-
-func setupServer() error {
-	handler.SetUpRouting(postgres)
-
-	go http.ListenAndServe(":8080", nil)
-
-	return nil
+func setupServer(postgres *db.Postgres) *http.ServeMux {
+	return handler.SetUpRouting(postgres)
 }

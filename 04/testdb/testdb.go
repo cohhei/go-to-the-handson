@@ -2,8 +2,6 @@ package testdb
 
 import (
 	"database/sql"
-
-	"github.com/corhhey/go-to-the-handson/04/db"
 )
 
 const createTable = `
@@ -21,17 +19,17 @@ type TestDB struct {
 	db *sql.DB
 }
 
-func Setup() *db.Postgres {
-	sqlDB, err := connectPostgresForTests()
+func Setup() *sql.DB {
+	db, err := connectPostgresForTests()
 	if err != nil {
 		panic(err)
 	}
 
-	if _, err = sqlDB.Exec(createTable); err != nil {
+	if _, err = db.Exec(createTable); err != nil {
 		panic(err)
 	}
 
-	return &db.Postgres{sqlDB}
+	return db
 }
 
 func connectPostgresForTests() (*sql.DB, error) {

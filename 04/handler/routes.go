@@ -6,14 +6,15 @@ import (
 	"github.com/corhhey/go-to-the-handson/04/db"
 )
 
-func SetUpRouting(postgres *db.Postgres) {
+func SetUpRouting(postgres *db.Postgres) *http.ServeMux {
 	todoHandler := &todoHandler{
 		postgres: postgres,
 		samples:  &db.Sample{},
 	}
 
-	http.HandleFunc("/samples", todoHandler.GetSamples)
-	http.HandleFunc("/todo", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/samples", todoHandler.GetSamples)
+	mux.HandleFunc("/todo", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
 			todoHandler.getAllTodo(w, r)
@@ -25,4 +26,6 @@ func SetUpRouting(postgres *db.Postgres) {
 			responseError(w, http.StatusNotFound, "")
 		}
 	})
+
+	return mux
 }

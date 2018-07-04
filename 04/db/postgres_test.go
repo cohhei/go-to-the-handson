@@ -1,17 +1,17 @@
 package db
 
 import (
-	"database/sql"
 	"reflect"
 	"testing"
 	"time"
 
 	"github.com/corhhey/go-to-the-handson/04/schema"
+	"github.com/corhhey/go-to-the-handson/04/testdb"
 	_ "github.com/lib/pq"
 )
 
 func TestPostgres_Insert(t *testing.T) {
-	postgres := setup(t)
+	postgres := &Postgres{testdb.Setup()}
 	defer postgres.Close()
 
 	todo := &schema.Todo{
@@ -33,7 +33,7 @@ func TestPostgres_Insert(t *testing.T) {
 }
 
 func TestPostgres_GetAll(t *testing.T) {
-	postgres := setup(t)
+	postgres := &Postgres{testdb.Setup()}
 	defer postgres.Close()
 
 	todo := &schema.Todo{
@@ -67,7 +67,7 @@ func TestPostgres_GetAll(t *testing.T) {
 }
 
 func TestPostgres_Delete(t *testing.T) {
-	postgres := setup(t)
+	postgres := &Postgres{testdb.Setup()}
 	defer postgres.Close()
 
 	todo := &schema.Todo{
@@ -94,45 +94,6 @@ func TestPostgres_Delete(t *testing.T) {
 	if len(got) > 0 {
 		t.Fatal("The record is not deleted.")
 	}
-}
-
-const createTable = `
-DROP TABLE IF EXISTS todo;
-Alter SEQUENCE todo_id RESTART WITH 1;
-CREATE TABLE todo (
-  ID serial PRIMARY KEY,
-  TITLE TEXT NOT NULL,
-  NOTE TEXT,
-  DUE_DATE TIMESTAMP WITH TIME ZONE
-);
-`
-
-func setup(t *testing.T) *Postgres {
-	db, err := connectPostgresForTests()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if _, err = db.Exec(createTable); err != nil {
-		t.Fatal(err)
-	}
-
-	return &Postgres{db}
-}
-
-func connectPostgresForTests() (*sql.DB, error) {
-	connStr := "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.Ping()
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
 }
 
 func equal(got interface{}, want interface{}) bool {
