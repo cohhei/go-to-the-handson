@@ -1,6 +1,6 @@
 # build stage
 FROM golang:1.10.2-alpine AS build
-ARG dir=/go/src/github.com/corhhey/go-to-the-handson/04
+ARG dir=/go/src/github.com/cohhei/go-to-the-handson/04
 ADD . ${dir}
 RUN apk update && \
     apk add --virtual build-dependencies build-base git && \
@@ -10,7 +10,7 @@ RUN apk update && \
 
 # final stage
 FROM alpine:3.7
-ARG dir=/go/src/github.com/corhhey/go-to-the-handson/04
+ARG dir=/go/src/github.com/cohhei/go-to-the-handson/04
 WORKDIR /app
 COPY --from=build ${dir}/todo-api /app/
 EXPOSE 8080

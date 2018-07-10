@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/corhhey/go-to-the-handson/04/db"
-	"github.com/corhhey/go-to-the-handson/04/handler"
-	"github.com/corhhey/go-to-the-handson/04/schema"
-	"github.com/corhhey/go-to-the-handson/04/testdb"
+	"github.com/cohhei/go-to-the-handson/04/db"
+	"github.com/cohhei/go-to-the-handson/04/handler"
+	"github.com/cohhei/go-to-the-handson/04/schema"
+	"github.com/cohhei/go-to-the-handson/04/testdb"
 )
 
 func TestGetSamples(t *testing.T) {

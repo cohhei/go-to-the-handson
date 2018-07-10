@@ -3,7 +3,7 @@ package db
 import (
 	"time"
 
-	"github.com/corhhey/go-to-the-handson/04/schema"
+	"github.com/cohhei/go-to-the-handson/04/schema"
 )
 
 type Sample struct{}

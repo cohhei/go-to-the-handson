@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/corhhey/go-to-the-handson/04/schema"
+	"github.com/cohhei/go-to-the-handson/04/schema"
 )
 
 func TestClose(t *testing.T) {

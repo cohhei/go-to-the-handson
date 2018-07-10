@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/corhhey/go-to-the-handson/04/db"
-	"github.com/corhhey/go-to-the-handson/04/handler"
+	"github.com/cohhei/go-to-the-handson/04/db"
+	"github.com/cohhei/go-to-the-handson/04/handler"
 )
 
 func main() {

@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/corhhey/go-to-the-handson/04/schema"
-	"github.com/corhhey/go-to-the-handson/04/testdb"
+	"github.com/cohhei/go-to-the-handson/04/schema"
+	"github.com/cohhei/go-to-the-handson/04/testdb"
 	_ "github.com/lib/pq"
 )
 

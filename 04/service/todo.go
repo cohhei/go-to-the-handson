@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/corhhey/go-to-the-handson/04/db"
-	"github.com/corhhey/go-to-the-handson/04/schema"
+	"github.com/cohhei/go-to-the-handson/04/db"
+	"github.com/cohhei/go-to-the-handson/04/schema"
 )
 
 func Close(ctx context.Context) {

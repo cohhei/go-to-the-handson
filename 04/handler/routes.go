@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/corhhey/go-to-the-handson/04/db"
+	"github.com/cohhei/go-to-the-handson/04/db"
 )
 
 func SetUpRouting(postgres *db.Postgres) *http.ServeMux {

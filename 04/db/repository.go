@@ -3,7 +3,7 @@ package db
 import (
 	"context"
 
-	"github.com/corhhey/go-to-the-handson/04/schema"
+	"github.com/cohhei/go-to-the-handson/04/schema"
 )
 
 const keyRepository = "Repository"
