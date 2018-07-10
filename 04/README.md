@@ -33,7 +33,7 @@ contents:
     - [Test for Postgres](#test-for-postgres)
     - [Implementation for Postgres](#implementation-for-postgres)
     - [Functional test for Postgres](#functional-test-for-postgres)
-    - [New routing](#new-routing)
+    - [New routing and handlers](#new-routing-and-handlers)
     - [Updating main.go](#updating-maingo)
   - [Docker](#docker)
     - [Postgres](#postgres)
@@ -79,7 +79,7 @@ type Todo struct {
 }
 ```
 
-It's a really common pattern to define schemas as a structure. The `Todo` structure has four fields, `ID`, `Title`, `Note`, and `DueDate`. They respectively have their types and [json tags](https://golang.org/pkg/encoding/json/). The tags will be the field names when the `Todo` structure is encoded.
+It's a really common pattern to define schemas as a structure. The `Todo` structure has four fields, `ID`, `Title`, `Note`, and `DueDate`. They respectively have their types and [json tags](https://golang.org/pkg/encoding/json/). The tags will be the field names when the `Todo` structure is encoded. If you don't write the tags, json field names will be the same as the structure's name.
 
 ## Repositories
 
@@ -968,7 +968,7 @@ functional/todo_test.go:164:22: too many arguments in call to handler.SetUpRouti
 FAIL    command-line-arguments [build failed]
 ```
 
-### New routing
+### New routing and handlers
 
 ```go
 // handler/todo.go
@@ -1045,6 +1045,8 @@ func (handler *todoHandler) getAllTodo(w http.ResponseWriter, r *http.Request) {
 	responseOk(w, todoList)
 }
 ```
+
+We are setting a repository at each handler function, but that's just in order to explain interfaces in Go. So you shouldn't use the pattern in your production code.
 
 ```go
 // handler/routes.go
@@ -1250,6 +1252,8 @@ todo_todo-api_1   /bin/sh -c ./todo-api           Up      0.0.0.0:8080->8080/tcp
 
 ## Requests
 
+We've completed the TODO-API but it can't be used from the browser. Create `requests/request.go`, a cli tool to use our API.
+
 ```sh
 $ mkdir requests
 $ touch requests/requests.go
@@ -1399,6 +1403,8 @@ func del() {
 }
 ```
 
+You can call all API's endpoints by sub commands, `samples`, `all`, `add`, and `delete`. 
+
 ```sh
 $ go run requests/requests.go
 
@@ -1411,8 +1417,10 @@ Commands:
   delete      Remove a todo task
 ```
 
+For instance, add a new task by `add $TASK_NAME $NOTE` and get all tasks by `all`.
+
 ```json
-$ go run requests/requests.go Task1 'this is the first task.'
+$ go run requests/requests.go add Task1 'this is the first task.'
 $ go run requests/requests.go all | jq
 [
   {
