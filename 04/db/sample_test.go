@@ -25,7 +25,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	if got != 0 {
-		t.Fatal("Want: 1, Got: ", got)
+		t.Fatal("Want: 0, Got: ", got)
 	}
 }
 

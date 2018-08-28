@@ -140,6 +140,35 @@ This `Repository` interface has four methods. We can access our DB through the i
 
 At first, we'll create a structure that returns static TODO list as samples instead of dynamic values in DB.
 
+```sh
+$ touch db/samples.go
+```
+
+```go
+// db/samples.go
+package db
+
+import "../schema"
+
+type Sample struct{}
+
+func (s *Sample) Close() {}
+
+func (s *Sample) Insert(todo *schema.Todo) (int, error) {
+	return 0, nil
+}
+
+func (s *Sample) Delete(id int) error {
+	return nil
+}
+
+func (s *Sample) GetAll() ([]schema.Todo, error) {
+	return nil, nil
+}
+```
+
+The `Sample` structure has `Close`, `Insert`, `Delete`, and `GetAll` methods, so we can use it as a `Repository` interface type. But these methods do nothing yet. Create tests for them first and implement them after that.
+
 ### Test for samples
 
 Create `db/sample_test.go` and write the tests.
@@ -177,7 +206,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	if got != 0 {
-		t.Fatal("Want: 1, Got: ", got)
+		t.Fatal("Want: 0, Got: ", got)
 	}
 }
 
@@ -225,23 +254,17 @@ func TestGetAll(t *testing.T) {
 }
 ```
 
-Our sample repository won't have any completed features for `Close`, `Insert`, and `Delete`. So the tests for them are meaningless. Of course, they'll fail yet.
+Our sample repository won't have any completed features for `Close`, `Insert`, and `Delete`. So the tests for them are meaningless and already pass. Of course, `TestGetAll` will fail yet.
 
 ```sh
-$ go test ./db/sample_test.go
-# command-line-arguments
-db/sample_test.go:12:12: undefined: Sample
-db/sample_test.go:18:12: undefined: Sample
-db/sample_test.go:33:12: undefined: Sample
-db/sample_test.go:42:12: undefined: Sample
-FAIL    command-line-arguments [build failed]
+$ go test ./db/*
+--- FAIL: TestGetAll (0.00s)
+        sample_test.go:71: Want: [{1 Do dishes  2000-01-01 00:00:00 +0000 UTC} {2 Do homework  2000-01-01 00:00:00 +0000 UTC} {2 Twitter  2000-01-01 00:00:00 +0000 UTC}], Got: []
+FAIL
+FAIL    command-line-arguments  0.041s
 ```
 
 ### Implementation for samples
-
-```sh
-$ touch db/samples.go
-```
 
 ```go
 // db/samples.go
@@ -253,17 +276,7 @@ import (
 	"../schema"
 )
 
-type Sample struct{}
-
-func (s *Sample) Close() {}
-
-func (s *Sample) Insert(todo *schema.Todo) (int, error) {
-	return 0, nil
-}
-
-func (s *Sample) Delete(id int) error {
-	return nil
-}
+// ...
 
 func (s *Sample) GetAll() ([]schema.Todo, error) {
 	todoList := []schema.Todo{
@@ -291,7 +304,7 @@ func (s *Sample) GetAll() ([]schema.Todo, error) {
 }
 ```
 
-The `Sample` structure has `Close`, `Insert`, `Delete`, and `GetAll` methods, so we can use it as a `Repository` interface type.
+Execute the tests. They will pass.
 
 ```sh
 $ go test ./db/*
@@ -604,7 +617,42 @@ func connectPostgresForTests() (*sql.DB, error) {
 
 ### Test for Postgres
 
-Create `db/postgres_test.go`.
+Create `db/postgres.go` and add methods to implement the `Repository` interface.
+
+```sh
+$ touch db/postgres.go
+```
+
+```go
+// db/postgres.go
+package db
+
+import (
+	"database/sql"
+
+	"github.com/cohhei/go-to-the-handson/04/schema"
+)
+
+type Postgres struct {
+	DB *sql.DB
+}
+
+func (p *Postgres) Close() {}
+
+func (p *Postgres) Insert(todo *schema.Todo) (int, error) {
+	return 0, nil
+}
+
+func (p *Postgres) Delete(id int) error {
+	return nil
+}
+
+func (p *Postgres) GetAll() ([]schema.Todo, error) {
+	return nil, nil
+}
+```
+
+Then create `db/postgres_test.go`.
 
 ```sh
 $ touch db/postgres_test.go
@@ -720,18 +768,14 @@ The test functions contain other methods in the `Postgres` structure for instanc
 Of course, the tests will fail yet.
 
 ```sh
-$ go test ./db/postgres_test.go
-# command-line-arguments
-db/postgres_test.go:24:27: undefined: Postgres
-db/postgres_test.go:34:10: undefined: Postgres
-FAIL    command-line-arguments [build failed]
+$ go test ./db/postgres*
+--- FAIL: TestPostgres_Insert (0.03s)
+        postgres_test.go:31: <nil>
+FAIL
+FAIL    command-line-arguments  0.077s
 ```
 
 ### Implementation for Postgres
-
-```sh
-$ touch db/postgres.go
-```
 
 ```go
 // db/postgres.go
