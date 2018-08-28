@@ -15,6 +15,7 @@ d9065d8c1f30        postgres:alpine     "docker-entrypoint.s…"   3 seconds ago
 
 ```sh
 $ touch connect.go
+$ go get -u github.com/lib/pq
 ```
 
 ```go
